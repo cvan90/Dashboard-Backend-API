@@ -10,7 +10,7 @@ app.use(cors())
 
 const SERVER_PORT = 8080; 
 
-
+//------------------------------------------------Tests-----------------------------------------------------------------
 app.get("/", (req,res) => {
     const _msg = "Demo node express api";
     console.log(_msg)
@@ -23,6 +23,13 @@ app.get("/about", (req,res) => {
 });
 app.get("/test1", (req,res) => {
     const _msg = "Demo node express api-test route";
+    console.log(_msg)
+    res.send(_msg)
+});
+//----------------------------------------------------------------------------
+//------------------------------------Login--------------------------------------------
+app.get("/login", (req,res) => {
+    const _msg = "# Demo node express api 1.0.0 - login route";
     console.log(_msg)
     res.send(_msg)
 });
