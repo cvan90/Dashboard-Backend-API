@@ -28,11 +28,25 @@ app.get("/test1", (req,res) => {
 });
 //----------------------------------------------------------------------------
 //------------------------------------Login--------------------------------------------
-app.get("/login", (req,res) => {
-    const _msg = "# Demo node express api 1.0.0 - login route";
-    console.log(_msg)
-    res.send(_msg)
+app.get("/login/:username/:password", (req, res) => {
+
+    const _username = req.params.username;
+    const _password = req.params.password;
+
+    let _msg = `login route, username: ${_username}, password: ${_password}`;
+    console.log(_msg);
+
+     let _data = {};
+
+     //validate login in database 
+
+     _msg = "login successful";
+    _data = { msg: _msg, login: true };
+
+    
+      res.send(_data);
 });
+//---------------------------------------------------------------------------------------------------
 //-other - POST, DELETE, PUT
 
 //-start node exporess web server - ie: live server
