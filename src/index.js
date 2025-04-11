@@ -1,6 +1,11 @@
 const express = require("express");  
 const cors = require("cors");  
+const bodyParser = require("body-parser");
 const app = express();  
+
+//-convert register form to a json request
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //cors allow access to same site or other localhost 
 
@@ -43,10 +48,26 @@ app.get("/login/:username/:password", (req, res) => {
      _msg = "login successful";
     _data = { msg: _msg, login: true };
 
-    
+
       res.send(_data);
 });
 //---------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------Register-------------------------------------
+app.post("/register", (req, res) => {
+    const _body = req.body;
+    let _msg = `register route, body: ${JSON.stringify(_body)}`;
+    console.log(_msg);
+    let _return = {};
+    const _username = _body.username;
+    const _password = _body.password;
+    //insert user row 
+    
+    _msg = "Registration Successful";
+    _return = { msg: _msg, register: true };
+     res.send(_return);
+});
+//-------------------------------------------------------------------------------------------------------
+
 //-other - POST, DELETE, PUT
 
 //-start node exporess web server - ie: live server
