@@ -1,6 +1,7 @@
 const express = require("express");  
 const cors = require("cors");  
 const bodyParser = require("body-parser");
+const { login, insert_user } = require("./dbutil");
 const app = express();  
 
 //-convert register form to a json request
@@ -34,38 +35,52 @@ app.get("/test1", (req,res) => {
 //----------------------------------------------------------------------------
 //------------------------------------Login--------------------------------------------
 app.get("/login/:username/:password", (req, res) => {
-
     const _username = req.params.username;
     const _password = req.params.password;
 
     let _msg = `login route, username: ${_username}, password: ${_password}`;
     console.log(_msg);
 
-     let _data = {};
+    let _data = {};
 
-     //validate login in database 
+    login(_username, _password, (islogin) => {
+        _msg = "Login successful";
+        _data = { msg: _msg, login: true };
 
-     _msg = "login successful";
-    _data = { msg: _msg, login: true };
+        if (!islogin) {
+            _msg = "invalid UserName/Password";
+            _data = { msg: _msg, login: false };
+        }
 
-
-      res.send(_data);
+        res.send(_data);
+    });
 });
 //---------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------Register-------------------------------------
 app.post("/register", (req, res) => {
     const _body = req.body;
+
     let _msg = `register route, body: ${JSON.stringify(_body)}`;
     console.log(_msg);
+
     let _return = {};
+
     const _username = _body.username;
     const _password = _body.password;
-    //insert user row 
-    
-    _msg = "Registration Successful";
-    _return = { msg: _msg, register: true };
-     res.send(_return);
+
+    insert_user(_username, _password, (isnewuser) => {
+        _msg = "Registration successful";
+        _return = { msg: _msg, register: true };
+
+        if (!isnewuser) {
+            _msg = "Invalid registration, Username already exists.";
+            _return = { msg: _msg, register: false };
+        }
+
+        res.send(_return);
+    });
 });
+
 //-------------------------------------------------------------------------------------------------------
 
 //-other - POST, DELETE, PUT
